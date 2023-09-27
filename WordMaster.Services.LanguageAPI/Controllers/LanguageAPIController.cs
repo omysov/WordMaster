@@ -1,18 +1,24 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WordMaster.Services.LanguageAPI.Data;
 using WordMaster.Services.LanguageAPI.Models;
 using WordMaster.Services.LanguageAPI.Models.Dto;
 
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+
 namespace WordMaster.Services.LanguageAPI.Controllers
 {
     [Route("api/languages")]
     [ApiController]
-    public class LanguageAPIController
+    [Authorize]
+    public class LanguageAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
         private IMapper _mapper;
         private ResponseDto _responseDto;
+        
 
         public LanguageAPIController(AppDbContext db, IMapper mapper)
         {
@@ -24,10 +30,12 @@ namespace WordMaster.Services.LanguageAPI.Controllers
         [HttpGet]
         public ResponseDto AllLanguage()
         {
+
             try
             {
                 IEnumerable<Language> objlist = _db.Languages.ToList();
                 _responseDto.Result = _mapper.Map<IEnumerable<Language>>(objlist);
+                //_responseDto.Message = userid;
                 return _responseDto;
             }
             catch (Exception ex)

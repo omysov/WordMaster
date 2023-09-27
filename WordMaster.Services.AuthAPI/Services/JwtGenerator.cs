@@ -28,6 +28,7 @@ namespace WordMaster.Services.AuthAPI.Services
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
             };
 
             //add range.
